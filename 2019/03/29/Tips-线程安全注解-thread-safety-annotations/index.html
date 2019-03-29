@@ -96,24 +96,24 @@
 
 
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="thread annotations 之 GUARDED_BYleveldb 中 thread_annotations.h 有如下宏定义 1234567891011121314151617#if defined(__clang__)#define THREAD_ANNOTATION_ATTRIBUTE__(x)   __attribute__((x))#else#define THREAD_ANN">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/1970/01/01/hello-world/index.html">
+<meta property="og:title" content="Tips 线程安全注解(thread safety annotations)">
+<meta property="og:url" content="http://yoursite.com/2019/03/29/Tips-线程安全注解-thread-safety-annotations/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="thread annotations 之 GUARDED_BYleveldb 中 thread_annotations.h 有如下宏定义 1234567891011121314151617#if defined(__clang__)#define THREAD_ANNOTATION_ATTRIBUTE__(x)   __attribute__((x))#else#define THREAD_ANN">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-28T11:06:42.453Z">
+<meta property="og:updated_time" content="2019-03-29T08:47:40.734Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="Tips 线程安全注解(thread safety annotations)">
+<meta name="twitter:description" content="thread annotations 之 GUARDED_BYleveldb 中 thread_annotations.h 有如下宏定义 1234567891011121314151617#if defined(__clang__)#define THREAD_ANNOTATION_ATTRIBUTE__(x)   __attribute__((x))#else#define THREAD_ANN">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/1970/01/01/hello-world/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/29/Tips-线程安全注解-thread-safety-annotations/">
 
 
 
@@ -123,7 +123,7 @@
   };
 </script>
 
-  <title>Hello World | Hexo</title>
+  <title>Tips 线程安全注解(thread safety annotations) | Hexo</title>
   
 
 
@@ -288,7 +288,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/1970/01/01/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/29/Tips-线程安全注解-thread-safety-annotations/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -305,7 +305,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World
+          <h1 class="post-title" itemprop="name headline">Tips 线程安全注解(thread safety annotations)
 
               
             
@@ -331,24 +331,12 @@
                 
               
 
-              <time title="Created: 1970-01-01 08:00:00" itemprop="dateCreated datePublished" datetime="1970-01-01T08:00:00+08:00">1970-01-01</time>
+              <time title="Created: 2019-03-29 15:57:12 / Modified: 16:47:40" itemprop="dateCreated datePublished" datetime="2019-03-29T15:57:12+08:00">2019-03-29</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-03-28 19:06:42" itemprop="dateModified" datetime="2019-03-28T19:06:42+08:00">2019-03-28</time>
               
             
           </span>
@@ -382,15 +370,14 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <h3 id="thread-annotations-之-GUARDED-BY"><a href="#thread-annotations-之-GUARDED-BY" class="headerlink" title="thread annotations 之 GUARDED_BY"></a>thread annotations 之 GUARDED_BY</h3><p>leveldb 中 thread_annotations.h 有如下宏定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#if defined(__clang__)</span><br><span class="line"></span><br><span class="line">#define THREAD_ANNOTATION_ATTRIBUTE__(x)   __attribute__((x))</span><br><span class="line">#else</span><br><span class="line">#define THREAD_ANNOTATION_ATTRIBUTE__(x)   // no-op</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#endif  // !defined(THREAD_ANNOTATION_ATTRIBUTE__)</span><br><span class="line"></span><br><span class="line">#ifndef GUARDED_BY</span><br><span class="line">#define GUARDED_BY(x) THREAD_ANNOTATION_ATTRIBUTE__(guarded_by(x))</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifndef PT_GUARDED_BY</span><br><span class="line">#define PT_GUARDED_BY(x) THREAD_ANNOTATION_ATTRIBUTE__(pt_guarded_by(x))</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<h4 id="no-op-macro"><a href="#no-op-macro" class="headerlink" title="no-op macro"></a>no-op macro</h4><p>其中有用到 no-op macro，一般有几种声明方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#define do_nothing(x)</span><br><span class="line">#define do_nothing(x) (void)0</span><br><span class="line">#define do_nothing(x) do &#123;&#125; while(0)</span><br></pre></td></tr></table></figure>
+<h4 id="线程安全注解-thread-safety-annotations"><a href="#线程安全注解-thread-safety-annotations" class="headerlink" title="线程安全注解(thread safety annotations)"></a>线程安全注解(thread safety annotations)</h4><p>线程安全注解(thread safety annotations) 是 clang 提供的用于编译期检查锁的使用的一系列宏。其功能为编译时检查锁的使用，提示编译警告或错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">类拥有加锁解锁的成员函数</span><br><span class="line"> LOCKABLE</span><br><span class="line">类对锁的使用遵循 RAII</span><br><span class="line"> SCOPED_LOCKABLE</span><br><span class="line">函数进入时确保未加锁，函数退出时已加锁</span><br><span class="line"> EXCLUSIVE_LOCK_FUNCTION</span><br><span class="line"> SHARED_LOCK_FUNCTION  </span><br><span class="line">尝试加锁并返回成功与否</span><br><span class="line"> EXCLUSIVE_TRYLOCK_FUNCTION, SHARED_TRYLOCK_FUNCTION</span><br><span class="line">函数进入时确保已加锁，退出时已释放</span><br><span class="line"> UNLOCK_FUNCTION</span><br><span class="line">数据被访问时确保已加锁</span><br><span class="line"> GUARDED_BY, PT_GUARDED_BY</span><br><span class="line">函数被调用时确保已经加锁</span><br><span class="line"> EXCLUSIVE_LOCKS_REQUIRED, SHARED_LOCKS_REQUIRED</span><br><span class="line">函数被调用时确保未加锁</span><br><span class="line"> LOCKS_EXCLUDED</span><br><span class="line">死锁监测，确保锁的加锁顺序</span><br><span class="line"> ACQUIRED_BEFORE, ACQUIRED_AFTER</span><br></pre></td></tr></table></figure>
+<p>链接中有不少实例，C++ 网络库 muduo 也几乎全面<a href="https://github.com/chenshuo/muduo/commit/4cc25e67a0384fa4332ed49d2a5c73eceb002716" target="_blank" rel="noopener">添加了线程安全注解</a></p>
+<h4 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h4><p><a href="http://releases.llvm.org/3.5.1/tools/clang/docs/ThreadSafetyAnalysis.html" target="_blank" rel="noopener">Thread Safety Analysis — Clang 3.5 documentation</a><br><a href="https://llvm.org/devmtg/2011-11/Hutchins_ThreadSafety.pdf" target="_blank" rel="noopener">Hutchins_ThreadSafety.pdf</a></p>
 
       
     </div>
@@ -421,15 +408,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/03/29/LeetCode-2-Add-Two-Numbers/" rel="next" title="LeetCode#2 Add Two Numbers">
+                <i class="fa fa-chevron-left"></i> LeetCode#2 Add Two Numbers
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/28/ARTS-Algorithm、Review、Tip、Share/" rel="prev" title="ARTS (Algorithm、Review、Tip、Share)">
-                ARTS (Algorithm、Review、Tip、Share) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -555,7 +542,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#thread-annotations-之-GUARDED-BY"><span class="nav-number">1.</span> <span class="nav-text">thread annotations 之 GUARDED_BY</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#no-op-macro"><span class="nav-number">1.1.</span> <span class="nav-text">no-op macro</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程安全注解-thread-safety-annotations"><span class="nav-number">1.2.</span> <span class="nav-text">线程安全注解(thread safety annotations)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#链接"><span class="nav-number">1.3.</span> <span class="nav-text">链接</span></a></li></ol></li></ol></div>
             
 
           </div>

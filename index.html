@@ -285,6 +285,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/29/Tips-线程安全注解-thread-safety-annotations/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/29/Tips-线程安全注解-thread-safety-annotations/" class="post-title-link" itemprop="url">Tips 线程安全注解(thread safety annotations)</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-29 15:57:12 / Modified: 16:47:40" itemprop="dateCreated datePublished" datetime="2019-03-29T15:57:12+08:00">2019-03-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="thread-annotations-之-GUARDED-BY"><a href="#thread-annotations-之-GUARDED-BY" class="headerlink" title="thread annotations 之 GUARDED_BY"></a>thread annotations 之 GUARDED_BY</h3><p>leveldb 中 thread_annotations.h 有如下宏定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#if defined(__clang__)</span><br><span class="line"></span><br><span class="line">#define THREAD_ANNOTATION_ATTRIBUTE__(x)   __attribute__((x))</span><br><span class="line">#else</span><br><span class="line">#define THREAD_ANNOTATION_ATTRIBUTE__(x)   // no-op</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#endif  // !defined(THREAD_ANNOTATION_ATTRIBUTE__)</span><br><span class="line"></span><br><span class="line">#ifndef GUARDED_BY</span><br><span class="line">#define GUARDED_BY(x) THREAD_ANNOTATION_ATTRIBUTE__(guarded_by(x))</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifndef PT_GUARDED_BY</span><br><span class="line">#define PT_GUARDED_BY(x) THREAD_ANNOTATION_ATTRIBUTE__(pt_guarded_by(x))</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<h4 id="no-op-macro"><a href="#no-op-macro" class="headerlink" title="no-op macro"></a>no-op macro</h4><p>其中有用到 no-op macro，一般有几种声明方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#define do_nothing(x)</span><br><span class="line">#define do_nothing(x) (void)0</span><br><span class="line">#define do_nothing(x) do &#123;&#125; while(0)</span><br></pre></td></tr></table></figure>
+<h4 id="线程安全注解-thread-safety-annotations"><a href="#线程安全注解-thread-safety-annotations" class="headerlink" title="线程安全注解(thread safety annotations)"></a>线程安全注解(thread safety annotations)</h4><p>线程安全注解(thread safety annotations) 是 clang 提供的用于编译期检查锁的使用的一系列宏。其功能为编译时检查锁的使用，提示编译警告或错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">类拥有加锁解锁的成员函数</span><br><span class="line"> LOCKABLE</span><br><span class="line">类对锁的使用遵循 RAII</span><br><span class="line"> SCOPED_LOCKABLE</span><br><span class="line">函数进入时确保未加锁，函数退出时已加锁</span><br><span class="line"> EXCLUSIVE_LOCK_FUNCTION</span><br><span class="line"> SHARED_LOCK_FUNCTION  </span><br><span class="line">尝试加锁并返回成功与否</span><br><span class="line"> EXCLUSIVE_TRYLOCK_FUNCTION, SHARED_TRYLOCK_FUNCTION</span><br><span class="line">函数进入时确保已加锁，退出时已释放</span><br><span class="line"> UNLOCK_FUNCTION</span><br><span class="line">数据被访问时确保已加锁</span><br><span class="line"> GUARDED_BY, PT_GUARDED_BY</span><br><span class="line">函数被调用时确保已经加锁</span><br><span class="line"> EXCLUSIVE_LOCKS_REQUIRED, SHARED_LOCKS_REQUIRED</span><br><span class="line">函数被调用时确保未加锁</span><br><span class="line"> LOCKS_EXCLUDED</span><br><span class="line">死锁监测，确保锁的加锁顺序</span><br><span class="line"> ACQUIRED_BEFORE, ACQUIRED_AFTER</span><br></pre></td></tr></table></figure>
+<p>链接中有不少实例，C++ 网络库 muduo 也几乎全面<a href="https://github.com/chenshuo/muduo/commit/4cc25e67a0384fa4332ed49d2a5c73eceb002716" target="_blank" rel="noopener">添加了线程安全注解</a></p>
+<h4 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h4><p><a href="http://releases.llvm.org/3.5.1/tools/clang/docs/ThreadSafetyAnalysis.html" target="_blank" rel="noopener">Thread Safety Analysis — Clang 3.5 documentation</a><br><a href="https://llvm.org/devmtg/2011-11/Hutchins_ThreadSafety.pdf" target="_blank" rel="noopener">Hutchins_ThreadSafety.pdf</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/29/LeetCode-2-Add-Two-Numbers/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -788,7 +938,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
