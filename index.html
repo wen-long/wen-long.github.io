@@ -285,6 +285,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/01/LeetCode-3-Longest-Substring-Without-Repeating-Characters/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/04/01/LeetCode-3-Longest-Substring-Without-Repeating-Characters/" class="post-title-link" itemprop="url">LeetCode#3 Longest Substring Without Repeating Characters</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-01 11:35:12 / Modified: 11:46:12" itemprop="dateCreated datePublished" datetime="2019-04-01T11:35:12+08:00">2019-04-01</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><blockquote>
+<p>Given a string, find the length of the longest substring without repeating characters.</p>
+</blockquote>
+<p>求给定字符串中，不包含重复字符的最长字字符串的长度</p>
+<p>此题与 <a href="/2019/03/29/LeetCode-2-Add-Two-Numbers/" title="LeetCode#2 Add Two Numbers">LeetCode#2 Add Two Numbers</a> 一样属于串的算法。解法也类似，使用 map 保存过去的值，对原字符串只遍历一次。</p>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><p>这里给出 golang 的最优解</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">func lengthOfLongestSubstring(s string) int &#123;</span><br><span class="line">    m := make(map[byte]int)</span><br><span class="line">    current := 0</span><br><span class="line">    count := 0</span><br><span class="line">    for i := 0; i != len(s); &#123;</span><br><span class="line">        c := s[i]</span><br><span class="line">        if _, ok := m[c]; !ok &#123;</span><br><span class="line">            m[c] = i</span><br><span class="line">            current++</span><br><span class="line">            if (current &gt; count) &#123;</span><br><span class="line">                count = current</span><br><span class="line">            &#125;</span><br><span class="line">            i++</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            end := m[c]</span><br><span class="line">            m[c] = i</span><br><span class="line">            start := i - current</span><br><span class="line">            </span><br><span class="line">            fmt.Println(start, end)</span><br><span class="line">            for j:= start; j &lt; end; j++ &#123;</span><br><span class="line">                delete(m, s[j])</span><br><span class="line">            &#125;</span><br><span class="line">            fmt.Println(m)</span><br><span class="line">            current = i - end</span><br><span class="line">            i++</span><br><span class="line">        &#125;</span><br><span class="line">        //fmt.Println(i,c)</span><br><span class="line">    &#125;</span><br><span class="line">    return count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上解中，有对 map 的删除操作，假设原字符串实际上长度有限，可以省略掉 map 的删除，进一步空间换时间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">func lengthOfLongestSubstring(s string) int &#123;</span><br><span class="line">    m := make(map[byte]int)</span><br><span class="line">    current := 0</span><br><span class="line">    count := 0</span><br><span class="line">    for i := 0; i != len(s); &#123;</span><br><span class="line">        c := s[i]</span><br><span class="line">        if existIndex, ok := m[c]; existIndex &lt; i-current || !ok &#123;</span><br><span class="line">            m[c] = i</span><br><span class="line">            current++</span><br><span class="line">            if (current &gt; count) &#123;</span><br><span class="line">                count = current</span><br><span class="line">            &#125;</span><br><span class="line">            i++</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            end := m[c]</span><br><span class="line">            m[c] = i</span><br><span class="line">            current = i - end</span><br><span class="line">            i++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此版本运行结果为</p>
+<blockquote>
+<p>Runtime: 8 ms, faster than 84.25% of Go online submissions for Longest Substring Without Repeating Characters.<br>Memory Usage: 3.1 MB, less than 49.12% of Go online submissions for Longest Substring Without Repeating Characters.</p>
+</blockquote>
+<p>如果极端追求更少的代码行数，可以参考官网解答中给出的 java 解</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class Solution &#123;</span><br><span class="line">    public int lengthOfLongestSubstring(String s) &#123;</span><br><span class="line">        int n = s.length(), ans = 0;</span><br><span class="line">        Map&lt;Character, Integer&gt; map = new HashMap&lt;&gt;(); // current index of character</span><br><span class="line">        // try to extend the range [i, j]</span><br><span class="line">        for (int j = 0, i = 0; j &lt; n; j++) &#123;</span><br><span class="line">            if (map.containsKey(s.charAt(j))) &#123;</span><br><span class="line">                i = Math.max(map.get(s.charAt(j)), i);</span><br><span class="line">            &#125;</span><br><span class="line">            ans = Math.max(ans, j - i + 1);</span><br><span class="line">            map.put(s.charAt(j), j + 1);</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>官网也提供了把原字符串中字符当做 128bit 的 ASCII，使用 bit map 替代 map/hashmap 的解法，应自行斟酌。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/29/Tips-线程安全注解-thread-safety-annotations/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -938,7 +1096,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
